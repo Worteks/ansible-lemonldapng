@@ -2,6 +2,6 @@
 - name: Setup Reload Hosts Record
   lineinfile: dest=/etc/hosts regexp="^{{ ansible_default_ipv4['address'] | default('127.0.0.1') }} reload.{{ lemonldap_domain | default('example.com') }}" line="{{ ansible_default_ipv4['address'] | default('127.0.0.1') }} reload.{{ lemonldap_domain | default('example.com') }}"
 - include_tasks: set-domain.yml check_dir=/var/lib/lemonldap-ng check_file={{ item }}
-  with_items: [ 'conf/lm-Conf1.js', 'test/index.pl' ]
+  with_items: [ 'conf/lmConf-1.js', 'test/index.pl' ]
 - include_tasks: set-domain.yml check_dir=/etc/lemonldap-ng check_file={{ item }}{{ lemonldap_webserver | default('apache') == 'nginx' | ternary('-nginx', '-apache2') }}.conf
   with_items: lemonldap_webserver_conf
