@@ -25,6 +25,12 @@
   when: lemonldap_webserver | default('apache') == 'nginx'
   with_items: [ "nginx", "lemonldap-ng-fastcgi-server", "perl-LWP-Protocol-https" ]
   yum: name={{ item }} state=present
+- name: Enable Apache
+  service: name=httpd state=started enabled=yes
+  when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
+- name: Enable Nginx
+  service: name=nginx state=started enabled=yes
+  when: lemonldap_webserver | default('apache') == 'nginx'
 - name: Install LLNG
   with_items: [ "lemonldap-ng", "lemonldap-ng-fr-doc" ]
   yum: name={{ item }} state=present

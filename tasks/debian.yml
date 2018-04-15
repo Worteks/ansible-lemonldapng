@@ -23,6 +23,12 @@
   apt: name={{ item }} state=present
   when: lemonldap_webserver | default('apache') == 'nginx'
   with_items: [ "nginx", "nginx-extras", "lemonldap-ng-fastcgi-server", "apt-transport-https", "liblasso-perl" ]
+- name: Enable Apache
+  service: name=apache2 state=started enabled=yes
+  when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
+- name: Enable Nginx
+  service: name=nginx state=started enabled=yes
+  when: lemonldap_webserver | default('apache') == 'nginx'
 - name: Install LLNG
   apt: name={{ item }} state=present
   with_items: [ "lemonldap-ng", "lemonldap-ng-fr-doc" ]
