@@ -1,0 +1,30 @@
+---
+- name: Install LLNG Repository KEY
+  copy: src=rpm-gpg-key-ow2 dest=/etc/pki/rpm-gpg/RPM-GPG-KEY-OW2 owner=root group=root mode=0644
+- name: Check for Missing Trusted Key
+  changed_when: "has_rpm_key.rc != 0"
+  failed_when: false
+  register: has_rpm_key
+  shell: rpm -q gpg-pubkey --qf '%{VERSION}\n' | grep -i {{ lemonldap_gpg_pubkey_id }}
+- name: Import LLNG GPG KEY
+  shell: rpm --import RPM-GPG-KEY-OW2 chdir=/etc/pki/rpm-gpg
+  when: has_rpm_key is defined and has_rpm_key.rc is defined and has_rpm_key.rc != 0
+- name: Install epel-release
+  yum: name=epel-release state=present
+- name: Install LLNG Enterprise Linux Repository
+  copy: src=redhat_lemonldap-ng.repo dest=/etc/yum.repos.d/lemonldap-ng.repo owner=root group=root mode=0644
+  register: llng_repo
+- name: Refresh Packages Cache
+  shell: yum clean all && yum makecache
+  when: llng_repo is defined and llng_repo.changed is defined and llng_repo.changed == True
+- name: Install Webserver Dependencies (1/2)
+  when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
+  with_items: [ "httpd", "mod_perl", "mod_fcgid", "perl-LWP-Protocol-https" ]
+  yum: name={{ item }} state=present
+- name: Install Webserver Dependencies (2/2)
+  when: lemonldap_webserver | default('apache') == 'nginx'
+  with_items: [ "nginx", "lemonldap-ng-fastcgi-server", "perl-LWP-Protocol-https" ]
+  yum: name={{ item }} state=present
+- name: Install LLNG
+  with_items: [ "lemonldap-ng", "lemonldap-ng-fr-doc" ]
+  yum: name={{ item }} state=present

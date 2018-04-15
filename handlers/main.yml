@@ -1,0 +1,10 @@
+---
+- name: reload apache (deb)
+  service: name=apache2 state=restarted
+  when: ansible_os_family == "Debian" and lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
+- name: reload apache (el)
+  service: name=httpd state=restarted
+  when: ansible_os_family == "RedHat" and lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
+- name: reload nginx
+  service: name=nginx state=restarted
+  when: lemonldap_webserver | default('apache') == 'nginx'

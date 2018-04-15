@@ -1,0 +1,10 @@
+---
+- name: Check LLNG Current Domain
+  changed_when: "need_domain_changed is defined and need_domain_changed.rc is defined and need_domain_changed.rc == 0"
+  failed_when: false
+  shell: grep example.com {{ check_file | default('conf/lmConf-1.js') }} chdir={{ check_dir | default('/var/lib/lemonldap-ng') }}
+  register: need_domain_changed
+  when: lemonldap_domain | default('example.com') != 'example.com'
+- name: Setup LLNG Default Domain
+  shell: sed -i "s/example\.com/{{ lemonldap_domain | default('example.com') }}/g" {{ check_file | default('conf/lmConf-1.js') }} chdir={{ check_dir | default('/var/lib/lemonldap-ng') }}
+  when: need_domain_changed is defined and need_domain_changed.rc is defined and need_domain_changed.rc == 0
