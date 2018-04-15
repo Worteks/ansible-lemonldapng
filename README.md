@@ -26,7 +26,7 @@ Example Playbook
 ```
     - hosts: servers
       roles:
-         - { role: lemonldapng, lemonldap_domain: my.org lemonldap_webserver: nginx }
+         - { role: lemonldapng, lemonldap_domain: my.org, lemonldap_webserver: nginx }
 ```
 
 License
