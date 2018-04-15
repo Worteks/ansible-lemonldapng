@@ -1,5 +1,6 @@
 ---
 lemonldap_gpg_pubkey_id: 81F18E7A
+lemonldap_do_soap: False
 lemonldap_domain: changeme.com
 lemonldap_webserver_conf:
   - handler

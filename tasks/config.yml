@@ -6,3 +6,4 @@
 - include_tasks: set-domain.yml check_dir=/etc/lemonldap-ng check_file={{ item }}{{ lemonldap_webserver | default('apache') == 'nginx' | ternary('-nginx', '-apache2') }}.conf
   notify: Reload Webserver
   with_items: lemonldap_webserver_conf
+- include_tasks: toggle-soap.yml
