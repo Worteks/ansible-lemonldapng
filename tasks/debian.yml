@@ -27,7 +27,7 @@
   when:
     - llng_repo is defined
     - llng_repo.changed is defined
-    - llng_repo.change
+    - llng_repo.changed
 
 - name: Install Webserver Dependencies (1/2)
   apt:

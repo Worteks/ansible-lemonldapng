@@ -6,6 +6,13 @@
     use_regex: yes
   register: lemonldap_webserver_conf_search_res
 
+- name: Find apache conf file to edit
+  find:
+    paths: /etc/httpd/conf.d/
+    patterns: "^z-lemonldap-ng.*?\\.conf$"
+    use_regex: yes
+  register: lemonldap_apache_conf_search_res
+
 - name: Find ini file to edit
   find:
     paths: /etc/lemonldap-ng/
@@ -21,8 +28,12 @@
   when: lemonldap_domain | default('example.com') != 'example.com'
   with_items:
     - "{{ lemonldap_webserver_conf_search_res.files }}"
+    - "{{ lemonldap_apache_conf_search_res.files }}"
     - "{{ lemonldap_ini_search_rest.files }}"
     - { 'path': '/var/lib/lemonldap-ng/conf/lmConf-1.json' }
+  notify:
+    - Reload Webserver
+    - Enable and reload lemonldap
 
 - name: symlink webserver config file
   file:
@@ -31,6 +42,7 @@
     state: link
   with_items: "{{ lemonldap_webserver_conf_search_res.files }}"
   when: lemonldap_webserver == 'nginx'
+  notify: Reload Webserver
 
 - name: Enable apache lemonldap config
   command: "a2ensite {{ item }}"
@@ -38,10 +50,15 @@
     - portal-apache2
     - manager-apache2
     - handler-apache2
-  when: lemonldap_webserver == 'apache'
+  when:
+    - lemonldap_webserver == 'apache'
+    - ansible_os_family == "Debian"
 
 - name: Enable apache module required by lemonldap config
   command: "a2enmod {{ item }}"
   with_items:
     - headers
     - rewrite
+  when:
+    - lemonldap_webserver == 'apache'
+    - ansible_os_family == "Debian"
