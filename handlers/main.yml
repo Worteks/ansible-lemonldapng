@@ -1,10 +1,29 @@
 ---
+- name: Enable and reload lemonldap
+  service:
+    name: llng-fastcgi-server
+    state: restarted
+    enabled: yes
+
 - name: Reload Webserver
-  service: name=apache2 state=restarted
-  when: ansible_os_family == "Debian" and lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
+  service:
+    name: apache2
+    state: restarted
+  when:
+    - ansible_os_family == "Debian"
+    - lemonldap_webserver in [ 'apache', 'httpd' ]
+
 - name: Reload Webserver
-  service: name=httpd state=restarted
-  when: ansible_os_family == "RedHat" and lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
+  service:
+    name: httpd
+    state: restarted
+  when:
+    - ansible_os_family == "RedHat"
+    - lemonldap_webserver in [ 'apache', 'httpd' ]
+
 - name: Reload Webserver
-  service: name=nginx state=restarted
-  when: lemonldap_webserver | default('apache') == 'nginx'
+  service:
+    name: nginx
+    state: restarted
+  when:
+    - lemonldap_webserver == 'nginx'
