@@ -4,6 +4,8 @@
     name: llng-fastcgi-server
     state: restarted
     enabled: yes
+  when:
+    - lemonldap_webserver == 'nginx'
 
 - name: Reload Webserver
   service:
