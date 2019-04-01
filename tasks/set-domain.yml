@@ -13,6 +13,12 @@
     use_regex: yes
   register: lemonldap_apache_conf_search_res
 
+- name: Find nginx conf file to edit
+  find:
+    paths: /etc/nginx/conf.d/
+    patterns: "*-nginx.conf"
+  register: lemonldap_nginx_conf_search_res
+
 - name: Find ini file to edit
   find:
     paths: /etc/lemonldap-ng/
@@ -29,6 +35,7 @@
   with_items:
     - "{{ lemonldap_webserver_conf_search_res.files }}"
     - "{{ lemonldap_apache_conf_search_res.files }}"
+    - "{{ lemonldap_nginx_conf_search_res.files }}"
     - "{{ lemonldap_ini_search_rest.files }}"
     - { 'path': '/var/lib/lemonldap-ng/conf/lmConf-1.json' }
   notify:

@@ -69,3 +69,12 @@
   with_items:
     - lemonldap-ng
     - lemonldap-ng-fr-doc
+
+- name: Install LLNG Nginx support
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - lemonldap-ng-nginx
+  when:
+    - "lemonldap_webserver == 'nginx'"
