@@ -37,4 +37,4 @@ MIT
 Author Information
 ------------------
 
-See [](AUTHORS)
+See [AUTHORS](AUTHORS)
