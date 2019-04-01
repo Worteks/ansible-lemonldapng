@@ -1,3 +1,27 @@
 - hosts: lemon
   roles:
-    - lemonldapng
+    - ../ansible-lemonldapng/
+
+- hosts: lemon
+  tasks:
+    - uri:
+        url: http://{{ ansible_default_ipv4.address }}/
+        headers:
+            Host: "auth.{{ lemonldap_domain }}"
+        return_content: yes
+      register: loginform
+    - uri:
+        url: http://{{ ansible_default_ipv4.address }}/
+        method: POST
+        headers:
+            Host: "auth.{{ lemonldap_domain }}"
+        body_format: form-urlencoded
+        status_code: 302
+        body:
+            user: dwho
+            password: dwho
+            token: "{{ loginform.content | regex_search('name=\"token\" value=\"([^\"]*)\"', '\\1') }}"
+      register: login_post
+
+    - assert:
+        that: "'lemonldap=' in login_post.set_cookie"
