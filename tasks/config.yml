@@ -1,8 +1,2 @@
 ---
-- name: Setup Reload Hosts Record
-  lineinfile: 
-    dest: /etc/hosts
-    regexp: "^{{ ansible_default_ipv4['address'] | default('127.0.0.1') }}[ \t]*reload.{{ lemonldap_domain | default('example.com') }}"
-    line: "{{ ansible_default_ipv4['address'] | default('127.0.0.1') }} reload.{{ lemonldap_domain | default('example.com') }}"
-- include_tasks: set-domain.yml 
-- include_tasks: toggle-soap.yml
+- include_tasks: set-domain.yml
