@@ -13,7 +13,7 @@ Role Variables
 
  * `lemonldap_do_soap`, toggles SOAP-related webserver configuration, defaults to `False`.
  * `lemonldap_domain`, the root domain of your LLNG setup, defaults to `changeme.com`.
- * `lemonldap_webserver`, the webserver running LLNG, defaults to `apache`, could be changed to `nginx`.
+ * `lemonldap_webserver`, the webserver running LLNG, defaults to `nginx`, could be changed to `apache`.
 
 Dependencies
 ------------
@@ -37,9 +37,4 @@ MIT
 Author Information
 ------------------
 
- * Thibaut Demaret
- * Raphaël Hoareau
- * Eric Marques
- * Clément Oudot
- * Samuel Martin Moro
- * Paul Curie
+See [](AUTHORS)
