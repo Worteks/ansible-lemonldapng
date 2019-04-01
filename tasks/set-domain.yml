@@ -53,6 +53,7 @@
   when:
     - lemonldap_webserver == 'apache'
     - ansible_os_family == "Debian"
+  notify: Reload Webserver
 
 - name: Enable apache module required by lemonldap config
   command: "a2enmod {{ item }}"
@@ -62,3 +63,4 @@
   when:
     - lemonldap_webserver == 'apache'
     - ansible_os_family == "Debian"
+  notify: Reload Webserver

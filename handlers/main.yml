@@ -7,25 +7,28 @@
   when:
     - lemonldap_webserver == 'nginx'
 
-- name: Reload Webserver
+- name: Debian Restart Apache
   service:
     name: apache2
     state: restarted
+  listen: Reload Webserver
   when:
     - ansible_os_family == "Debian"
     - lemonldap_webserver in [ 'apache', 'httpd' ]
 
-- name: Reload Webserver
+- name: Redhat Restart Apache
   service:
     name: httpd
     state: restarted
+  listen: Reload Webserver
   when:
     - ansible_os_family == "RedHat"
     - lemonldap_webserver in [ 'apache', 'httpd' ]
 
-- name: Reload Webserver
+- name: Restart nginx
   service:
     name: nginx
     state: restarted
+  listen: Reload Webserver
   when:
     - lemonldap_webserver == 'nginx'
