@@ -37,11 +37,17 @@
 
 - name: symlink webserver config file
   file:
-    src: "{{ item.path }}"
-    dest: "/etc/nginx/sites-enabled/{{ item.path | basename }}"
+    src: "/etc/lemonldap-ng/{{ item }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ item }}.conf"
     state: link
-  with_items: "{{ lemonldap_webserver_conf_search_res.files }}"
-  when: lemonldap_webserver == 'nginx'
+  with_items:
+    - test-nginx
+    - portal-nginx
+    - manager-nginx
+    - handler-nginx
+  when:
+    - lemonldap_webserver == 'nginx'
+    - ansible_os_family == "Debian"
   notify: Reload Webserver
 
 - name: Enable apache lemonldap config

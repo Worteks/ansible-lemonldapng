@@ -32,14 +32,21 @@
     state: present
     update_cache: yes
   when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
-  with_items: [ "httpd", "mod_perl", "mod_fcgid", "perl-LWP-Protocol-https" ]
+  with_items:
+    - httpd
+    - mod_perl
+    - mod_fcgid
+    - perl-LWP-Protocol-https
 
 - name: Install Webserver Dependencies (2/2)
   yum:
     name: "{{ item }}"
     state: present
   when: lemonldap_webserver | default('apache') == 'nginx'
-  with_items: [ "nginx", "lemonldap-ng-fastcgi-server", "perl-LWP-Protocol-https" ]
+  with_items:
+    - nginx
+    - lemonldap-ng-fastcgi-server
+    - perl-LWP-Protocol-https
 
 - name: Enable Apache
   service:
@@ -59,4 +66,6 @@
   yum:
     name: "{{ item }}"
     state: present
-  with_items: [ "lemonldap-ng", "lemonldap-ng-fr-doc" ]
+  with_items:
+    - lemonldap-ng
+    - lemonldap-ng-fr-doc

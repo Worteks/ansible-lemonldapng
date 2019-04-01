@@ -18,7 +18,12 @@
     state: present
 
 - name: Install LLNG Debian Repository
-  copy: src=debian_lemonldap-ng.list dest=/etc/apt/sources.list.d/lemonldap-ng.list owner=root group=root mode=0644
+  copy:
+    src: debian_lemonldap-ng.list
+    dest: /etc/apt/sources.list.d/lemonldap-ng.list
+    owner: root
+    group: root
+    mode: 0644
   register: llng_repo
 
 - name: Refresh Packages Cache
@@ -34,14 +39,24 @@
     name: "{{ item }}"
     state: present
   when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
-  with_items: [ "apache2", "libapache2-mod-perl2", "libapache2-mod-fcgid", "apt-transport-https", "liblasso-perl" ]
+  with_items:
+    - apache2
+    - libapache2-mod-perl2
+    - libapache2-mod-fcgid
+    - apt-transport-https
+    - liblasso-perl
 
 - name: Install Webserver Dependencies (2/2)
   apt:
     name: "{{ item }}"
     state: present
   when: lemonldap_webserver | default('apache') == 'nginx'
-  with_items: [ "nginx", "nginx-extras", "lemonldap-ng-fastcgi-server", "apt-transport-https", "liblasso-perl" ]
+  with_items:
+    - nginx
+    - nginx-extras
+    - lemonldap-ng-fastcgi-server
+    - apt-transport-https
+    - liblasso-perl
 
 - name: Enable Apache
   service:
@@ -61,4 +76,6 @@
   apt:
     name: "{{ item }}"
     state: present
-  with_items: [ "lemonldap-ng", "lemonldap-ng-doc" ]
+  with_items:
+    - lemonldap-ng
+    - lemonldap-ng-doc
