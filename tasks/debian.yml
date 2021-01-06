@@ -36,27 +36,25 @@
 
 - name: Install Webserver Dependencies (1/2)
   apt:
-    name: "{{ item }}"
+    name:
+      - apache2
+      - libapache2-mod-perl2
+      - libapache2-mod-fcgid
+      - apt-transport-https
+      - liblasso-perl
     state: present
   when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
-  with_items:
-    - apache2
-    - libapache2-mod-perl2
-    - libapache2-mod-fcgid
-    - apt-transport-https
-    - liblasso-perl
 
 - name: Install Webserver Dependencies (2/2)
   apt:
-    name: "{{ item }}"
+    name: 
+      - nginx
+      - nginx-extras
+      - lemonldap-ng-fastcgi-server
+      - apt-transport-https
+      - liblasso-perl
     state: present
   when: lemonldap_webserver | default('apache') == 'nginx'
-  with_items:
-    - nginx
-    - nginx-extras
-    - lemonldap-ng-fastcgi-server
-    - apt-transport-https
-    - liblasso-perl
 
 - name: Enable Apache
   service:
@@ -74,8 +72,7 @@
 
 - name: Install LLNG
   apt:
-    name: "{{ item }}"
+    name: 
+      - lemonldap-ng
+      - lemonldap-ng-doc
     state: present
-  with_items:
-    - lemonldap-ng
-    - lemonldap-ng-doc
