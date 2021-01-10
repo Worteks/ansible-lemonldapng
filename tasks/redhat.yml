@@ -28,25 +28,23 @@
 
 - name: Install Webserver Dependencies (1/2)
   yum:
-    name: "{{ item }}"
+    name:
+      - httpd
+      - mod_perl
+      - mod_fcgid
+      - perl-LWP-Protocol-https
     state: present
     update_cache: yes
   when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
-  with_items:
-    - httpd
-    - mod_perl
-    - mod_fcgid
-    - perl-LWP-Protocol-https
 
 - name: Install Webserver Dependencies (2/2)
   yum:
-    name: "{{ item }}"
+    name:
+      - nginx
+      - lemonldap-ng-fastcgi-server
+      - perl-LWP-Protocol-https
     state: present
   when: lemonldap_webserver | default('apache') == 'nginx'
-  with_items:
-    - nginx
-    - lemonldap-ng-fastcgi-server
-    - perl-LWP-Protocol-https
 
 - name: Enable Apache
   service:
@@ -64,17 +62,15 @@
 
 - name: Install LLNG
   yum:
-    name: "{{ item }}"
+    name:
+      - lemonldap-ng
+      - lemonldap-ng-fr-doc
     state: present
-  with_items:
-    - lemonldap-ng
-    - lemonldap-ng-fr-doc
 
 - name: Install LLNG Nginx support
   yum:
-    name: "{{ item }}"
+    name: 
+      - lemonldap-ng-nginx
     state: present
-  with_items:
-    - lemonldap-ng-nginx
   when:
     - "lemonldap_webserver == 'nginx'"
