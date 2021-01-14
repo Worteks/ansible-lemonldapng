@@ -1,0 +1,36 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: instance
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    pre_build_image: true
+    networks:
+      - name: lemonldap
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+verifier:
+  name: ansible
+scenario:
+  test_sequence:
+    - dependency
+    - lint
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence
+    - side_effect
+    - verify
+    - cleanup
+    - destroy
