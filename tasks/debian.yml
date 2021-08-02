@@ -28,7 +28,7 @@
 
 - name: Refresh Packages Cache
   apt:
-    update_cache: yes
+    update_cache: true
   when:
     - llng_repo is defined
     - llng_repo.changed is defined
@@ -43,7 +43,7 @@
       - apt-transport-https
       - liblasso-perl
     state: present
-  when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
+  when: lemonldap_webserver | default('apache') in ['apache','httpd']
 
 - name: Install Webserver Dependencies (2/2)
   apt:
@@ -60,14 +60,14 @@
   service:
     name: apache2
     state: started
-    enabled: yes
+    enabled: true
   when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
 
 - name: Enable Nginx
   service:
     name: nginx
     state: started
-    enabled: yes
+    enabled: true
   when: lemonldap_webserver | default('apache') == 'nginx'
 
 - name: Install LLNG
