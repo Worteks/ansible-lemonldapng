@@ -47,7 +47,7 @@
 
 - name: Install Webserver Dependencies (2/2)
   apt:
-    name: 
+    name:
       - nginx
       - nginx-extras
       - lemonldap-ng-fastcgi-server
@@ -72,7 +72,7 @@
 
 - name: Install LLNG
   apt:
-    name: 
+    name:
       - lemonldap-ng
       - lemonldap-ng-doc
     state: present

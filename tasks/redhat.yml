@@ -34,7 +34,7 @@
       - mod_fcgid
       - perl-LWP-Protocol-https
     state: present
-    update_cache: yes
+    update_cache: true
   when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
 
 - name: Install Webserver Dependencies (2/2)
@@ -50,14 +50,14 @@
   service:
     name: httpd
     state: started
-    enabled: yes
+    enabled: true
   when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
 
 - name: Enable Nginx
   service:
     name: nginx
     state: started
-    enabled: yes
+    enabled: true
   when: lemonldap_webserver | default('apache') == 'nginx'
 
 - name: Install LLNG
@@ -69,7 +69,7 @@
 
 - name: Install LLNG Nginx support
   yum:
-    name: 
+    name:
       - lemonldap-ng-nginx
     state: present
   when:
