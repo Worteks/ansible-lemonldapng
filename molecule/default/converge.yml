@@ -17,4 +17,4 @@
   tasks:
     - name: "Include ansible-lemonldapng"
       include_role:
-        name: "ansible-lemonldapng"
+        name: "workteks.lemonldap"

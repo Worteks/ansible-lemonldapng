@@ -1,28 +1,29 @@
 galaxy_info:
-  author: Clément Oudot (clement.oudot@worteks.com)
-  description: LLNG
-  company: Worteks
-  issue_tracker_url: https://github.com/worteks/ansible-lemonldapng/issues
-  license: MIT
-  min_ansible_version: 2.4
-  github_branch: master
-  platforms:
-   - name: CentOS
-     versions:
-     - all
-   - name: RedHat
-     versions:
-     - all
-   - name: Debian
-     versions:
-     - all
-   - name: Ubuntu
-     versions:
-     - all
-  galaxy_tags:
-    - authentication
-    - SSO
-    - SAML
-    - LemonLDAP-NG
-    - Web
+    author: Clément Oudot (clement.oudot@worteks.com)
+    description: LLNG
+    company: Worteks
+    issue_tracker_url: https://github.com/worteks/ansible-lemonldapng/issues
+    license: MIT
+    min_ansible_version: 2.4
+    github_branch: master
+    role_name: workteks.lemonldap
+    platforms:
+        - name: CentOS
+          versions:
+              - all
+        - name: RedHat
+          versions:
+              - all
+        - name: Debian
+          versions:
+              - all
+        - name: Ubuntu
+          versions:
+              - all
+    galaxy_tags:
+        - authentication
+        - SSO
+        - SAML
+        - LemonLDAP-NG
+        - Web
 dependencies: []
