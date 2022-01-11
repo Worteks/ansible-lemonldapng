@@ -3,7 +3,7 @@
   service:
     name: llng-fastcgi-server
     state: restarted
-    enabled: yes
+    enabled: true
   when:
     - lemonldap_webserver == 'nginx'
 

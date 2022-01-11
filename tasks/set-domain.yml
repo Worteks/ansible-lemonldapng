@@ -3,14 +3,14 @@
   find:
     paths: /etc/lemonldap-ng/
     patterns: "^.*?{{ lemonldap_webserver }}.*?\\.conf$"
-    use_regex: yes
+    use_regex: true
   register: lemonldap_webserver_conf_search_res
 
 - name: Find apache conf file to edit
   find:
     paths: /etc/httpd/conf.d/
     patterns: "^z-lemonldap-ng.*?\\.conf$"
-    use_regex: yes
+    use_regex: true
   register: lemonldap_apache_conf_search_res
 
 - name: Find nginx conf file to edit
@@ -23,7 +23,7 @@
   find:
     paths: /etc/lemonldap-ng/
     patterns: "^.*?\\.ini$"
-    use_regex: yes
+    use_regex: true
   register: lemonldap_ini_search_rest
 
 - name: Check LLNG Current Domain
@@ -37,7 +37,7 @@
     - "{{ lemonldap_apache_conf_search_res.files }}"
     - "{{ lemonldap_nginx_conf_search_res.files }}"
     - "{{ lemonldap_ini_search_rest.files }}"
-    - { 'path': '/var/lib/lemonldap-ng/conf/lmConf-1.json' }
+    - {'path': '/var/lib/lemonldap-ng/conf/lmConf-1.json'}
   notify:
     - Reload Webserver
     - Enable and reload lemonldap
