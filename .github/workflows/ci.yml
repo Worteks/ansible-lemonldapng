@@ -52,6 +52,14 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install ansible molecule[docker] docker
 
+      - name: Build the collection
+        run: |
+          collection_file=$( basename $(ansible-galaxy collection build -f | awk -F" " '{print $NF}'))
+          echo "COLLECTION_FILE=$collection_file" >> $GITHUB_ENV
+
+      - name: Install the collection
+        run: ansible-galaxy collection install $COLLECTION_FILE
+
       - name: Run Molecule tests.
         run: molecule test
         env:
