@@ -8,5 +8,5 @@ rules:
     level: warning
 
 ignore: |
-  .github/stale.yml
-  tests/*.yml
+  .github/*/*.yml
+  roles/*/tests/*.yml
