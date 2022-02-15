@@ -14,7 +14,5 @@
         state: present
       when: ansible_os_family == 'Debian'
       changed_when: false
-  tasks:
-    - name: "Include ansible-lemonldapng"
-      include_role:
-        name: "workteks.lemonldap"
+  roles:
+    - install
