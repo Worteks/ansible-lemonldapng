@@ -15,4 +15,4 @@
       when: ansible_os_family == 'Debian'
       changed_when: false
   roles:
-    - install
+    - worteks.lemonldap.install
