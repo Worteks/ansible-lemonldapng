@@ -17,6 +17,21 @@
     name: epel-release
     state: present
 
+# We can't simply use yum_repository module because we need to
+# provide at least 'baseurl', 'metalink' or 'mirrorlist for that
+# module
+- name: Verify epel is enabled
+  register: check_powertools
+  changed_when: false
+  ansible.builtin.command:
+    cmd: dnf repolist --enabled powertool
+
+- name: Enable powertools if not already enabled
+  when: (check_powertools.stdout_lines | length) == 0
+  changed_when: false
+  ansible.builtin.command:
+    cmd: dnf -y config-manager --set-enabled powertools
+
 - name: Install LLNG Enterprise Linux Repository
   copy:
     src: redhat_lemonldap-ng.repo
