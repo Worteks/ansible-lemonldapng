@@ -4,20 +4,26 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: instance
-    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    pre_build_image: true
-    networks:
-      - name: lemonldap
+  - name: rockylinux8
+    image: "rockylinux:8"
+    command: /sbin/init
     privileged: true
+    pre_build_image: true
+    cgroupns_mode: host
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
+  - name: debian11
+    image: "debian:bullseye-slim"
+    command: /lib/systemd/systemd
+    privileged: true
+    pre_build_image: false
+    cgroupns_mode: host
+    dockerfile: Dockerfile.bullseye
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
 provisioner:
   name: ansible
   lint:
     name: ansible-lint
 verifier:
   name: ansible
-env:
-  ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/roles
