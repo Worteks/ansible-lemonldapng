@@ -79,7 +79,7 @@
   yum:
     name:
       - lemonldap-ng
-      - lemonldap-ng-fr-doc
+      - lemonldap-ng-doc
     state: present
 
 - name: Install LLNG Nginx support
