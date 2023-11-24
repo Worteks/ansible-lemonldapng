@@ -5,18 +5,18 @@
   hosts: all
   gather_facts: false
   tasks:
-  - name: Verify web server is running
-    uri:
-      url: http://localhost/
-      status_code: 200
-      return_content: true
-      headers:
-        Host: auth.example.ci
-    register: result_get_auth_portal
-  - name: Debug
-    debug:
-      msg: '{{ result_get_auth_portal }}'
-  - name: Check if LemonLDAP is present into response
-    assert:
-      that:
-        - "'LemonLDAP' in result_get_auth_portal.content"
+    - name: Verify web server is running
+      uri:
+        url: http://localhost/
+        status_code: 200
+        return_content: true
+        headers:
+          Host: auth.example.ci
+      register: result_get_auth_portal
+    - name: Debug
+      debug:
+        msg: '{{ result_get_auth_portal }}'
+    - name: Check if LemonLDAP is present into response
+      assert:
+        that:
+          - "'LemonLDAP' in result_get_auth_portal.content"
