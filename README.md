@@ -1,33 +1,13 @@
-Ansible LemonLDAP::NG role
-=========
+Role install from LemonLDAP::NG collection
+==========================================
 
-This is the ansible LemonLDAP::NG role. It can be used to install LemonLDAP::NG on a server.
+The idea behind this Ansible collection, is to provide some roles and modules to install, configure and manage the
+lifecycle of your LemonLDAP::NG instance (through the config file or the API).
 
-Requirements
-------------
-
-Pulling packages from the LLNG repository, which is to be installed by this role.
-
-Role Variables
---------------
-
- * `lemonldap_do_soap`, toggles SOAP-related webserver configuration, defaults to `False`.
- * `lemonldap_domain`, the root domain of your LLNG setup, defaults to `changeme.com`.
- * `lemonldap_webserver`, the webserver running LLNG, defaults to `nginx`, could be changed to `apache`.
-
-Dependencies
-------------
-
-None
-
-Example Playbook
-----------------
-
-```
-    - hosts: servers
-      roles:
-         - { role: lemonldapng, lemonldap_domain: my.org, lemonldap_webserver: nginx }
-```
+Roles
+-----
+Currently we provide those roles :
+ - [Install](docs/role_install.md)
 
 License
 -------
