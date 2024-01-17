@@ -1,0 +1,11 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Update apt cache and install gpg
+      apt:
+        name: gpg
+        state: present
+        update_cache: true
+      when: ansible_os_family == 'Debian'
