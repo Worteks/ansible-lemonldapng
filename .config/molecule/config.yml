@@ -8,8 +8,18 @@ platforms:
     image: "rockylinux:8"
     command: /sbin/init
     privileged: true
-    pre_build_image: true
+    pre_build_image: false
     cgroupns_mode: host
+    dockerfile: ../../.config/molecule/Dockerfile.j2
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+  - name: rockylinux9
+    image: "rockylinux:9"
+    command: /lib/systemd/systemd
+    privileged: true
+    pre_build_image: false
+    cgroupns_mode: host
+    dockerfile: ../../.config/molecule/Dockerfile.j2
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
   - name: debian11
