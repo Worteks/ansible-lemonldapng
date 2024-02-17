@@ -18,7 +18,7 @@ platforms:
     privileged: true
     pre_build_image: false
     cgroupns_mode: host
-    dockerfile: Dockerfile.bullseye
+    dockerfile: ../../.config/molecule/Dockerfile.j2
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
 provisioner:

@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM {{ item.image }}
 
 ENV container docker
 ENV LC_ALL C
