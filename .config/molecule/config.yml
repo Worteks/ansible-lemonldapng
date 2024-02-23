@@ -1,0 +1,48 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: rockylinux8
+    image: "rockylinux:8"
+    command: /sbin/init
+    privileged: true
+    pre_build_image: false
+    cgroupns_mode: host
+    dockerfile: ../../.config/molecule/Dockerfile.j2
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+  - name: rockylinux9
+    image: "rockylinux:9"
+    command: /lib/systemd/systemd
+    privileged: true
+    pre_build_image: false
+    cgroupns_mode: host
+    dockerfile: ../../.config/molecule/Dockerfile.j2
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+  - name: debian11
+    image: "debian:bullseye-slim"
+    command: /lib/systemd/systemd
+    privileged: true
+    pre_build_image: false
+    cgroupns_mode: host
+    dockerfile: ../../.config/molecule/Dockerfile.j2
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+  - name: debian12
+    image: "debian:bookworm-slim"
+    command: /lib/systemd/systemd
+    privileged: true
+    pre_build_image: false
+    cgroupns_mode: host
+    dockerfile: ../../.config/molecule/Dockerfile.j2
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+verifier:
+  name: ansible

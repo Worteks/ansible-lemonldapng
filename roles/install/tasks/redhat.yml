@@ -20,17 +20,21 @@
 # We can't simply use yum_repository module because we need to
 # provide at least 'baseurl', 'metalink' or 'mirrorlist for that
 # module
+- name: Set powertools / crb package name
+  ansible.builtin.set_fact:
+    powertools_repo: "{{ 'powertools' if ansible_distribution_major_version == '8' else 'crb' }}"
+
 - name: Verify epel is enabled
   register: check_powertools
   changed_when: false
   ansible.builtin.command:
-    cmd: dnf repolist --enabled powertool
+    cmd: dnf repolist --enabled {{powertools_repo }}
 
 - name: Enable powertools if not already enabled
   when: (check_powertools.stdout_lines | length) == 0
   changed_when: false
   ansible.builtin.command:
-    cmd: dnf -y config-manager --set-enabled powertools
+    cmd: dnf -y config-manager --set-enabled {{ powertools_repo }}
 
 - name: Install LLNG Enterprise Linux Repository
   copy:

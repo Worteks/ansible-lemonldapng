@@ -1,14 +1,19 @@
-FROM debian:bullseye-slim
+FROM {{ item.image }}
 
 ENV container docker
 ENV LC_ALL C
 ENV DEBIAN_FRONTEND noninteractive
 
+{% if item.image.startswith('debian') %}
 RUN apt-get update \
     && apt-get install -y python3 sudo bash ca-certificates iproute2 python3-apt aptitude systemd systemd-sysv \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
+{% else %}
+RUN dnf -y makecache && dnf --assumeyes install /usr/bin/python3 \
+        /usr/bin/python3-config /usr/bin/dnf-3 sudo bash iproute \
+        rsync systemd systemd-sysv && dnf clean all
+{% endif %}
 RUN rm -f /lib/systemd/system/multi-user.target.wants/* \
     /etc/systemd/system/*.wants/* \
     /lib/systemd/system/local-fs.target.wants/* \
