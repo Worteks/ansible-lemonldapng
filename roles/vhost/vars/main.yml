@@ -1,0 +1,4 @@
+---
+__nginx_vhosts_dir: "{{ '/etc/nginx/sites-available/' if ansible_os_family == 'Debian' else '/etc/nginx/conf.d/' }}"
+__nginx_webserver_owner: "{{ 'www-data' if ansible_os_family == 'Debian' else 'nginx' }}"
+__nginx_webserver_group: "{{ 'www-data' if ansible_os_family == 'Debian' else 'nginx' }}"

@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: Julian Vanden Broeck
+  description: Configure vhost on LLNG server
+  company: Dalibo
+  license: MIT
+  min_ansible_version: 2.13
+  platforms:
+    - name: CentOS
+      versions: [all]
+    - name: RedHat
+      versions: [all]
+    - name: Debian
+      versions: [all]
+    - name: Ubuntu
+      versions: [all]
+  galaxy_tags: [authentication, SSO, SAML, LemonLDAP-NG, Web]
+dependencies: []

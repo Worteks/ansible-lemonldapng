@@ -1,0 +1,30 @@
+---
+# tasks file for vhost
+- name: Configure vhost on LemonLDAP::NG side
+  worteks.lemonldap.vhost:
+    vhostname: '{{ item.vhostname }}'
+    access_rules: '{{ item.access_rules }}'
+    exported_headers: '{{ item.exported_headers }}'
+    force: '{{ item.force | default(false) }}'
+    https: '{{ item.https | default(true) }}'
+    maintenance: '{{ item.maintenance | default(false) }}'
+  loop: '{{ vhost_vhosts }}'
+- name: Configure vhost on nginx
+  ansible.builtin.template:
+    src: nginx_vhost.j2
+    dest: '{{ __nginx_vhosts_dir }}{{ item.vhostname }}.conf'
+    owner: '{{ __nginx_webserver_owner }}'
+    group: '{{ __nginx_webserver_group }}'
+    mode: '0640'
+  loop: '{{ vhost_vhosts }}'
+  notify: Reload webserver
+- name: Create a symbolic link
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.file:
+    src: '{{ __nginx_vhosts_dir }}{{ item.vhostname }}.conf'
+    dest: /etc/nginx/sites-enabled/{{ item.vhostname }}.conf
+    owner: '{{ __nginx_webserver_owner }}'
+    group: '{{ __nginx_webserver_group }}'
+    state: link
+  loop: '{{ vhost_vhosts }}'
+  notify: Reload webserver
