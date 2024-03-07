@@ -1,0 +1,11 @@
+---
+# tasks file for vhost
+- name: Configure vhost
+  worteks.lemonldap.vhost:
+    vhostname: '{{ item.vhostname }}'
+    access_rules: '{{ item.access_rules }}'
+    exported_headers: '{{ item.exported_headers }}'
+    force: '{{ item.force | default(false) }}'
+    https: '{{ item.https | default(true) }}'
+    maintenance: '{{ item.maintenance | default(false) }}'
+  loop: '{{ vhost_vhosts }}'
