@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    vhost_vhosts:
+      - vhostname: demo.example.com
+        exported_headers:
+          - {header: x-wing, value: machin}
+        access_rules:
+          - {location: /accept, rule: accept}
+  roles:
+    - role: worteks.lemonldap.vhost
