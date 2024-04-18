@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: rockylinux8
-    image: "rockylinux:8"
+    image: rockylinux:8
     command: /sbin/init
     privileged: true
     pre_build_image: false
@@ -14,7 +14,7 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
   - name: rockylinux9
-    image: "rockylinux:9"
+    image: rockylinux:9
     command: /lib/systemd/systemd
     privileged: true
     pre_build_image: false
@@ -23,7 +23,7 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
   - name: debian11
-    image: "debian:bullseye-slim"
+    image: debian:bullseye-slim
     command: /lib/systemd/systemd
     privileged: true
     pre_build_image: false
@@ -32,7 +32,7 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
   - name: debian12
-    image: "debian:bookworm-slim"
+    image: debian:bookworm-slim
     command: /lib/systemd/systemd
     privileged: true
     pre_build_image: false
