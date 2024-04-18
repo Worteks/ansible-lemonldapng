@@ -1,43 +1,45 @@
 ---
-- name: Find conf file to edit
-  ansible.builtin.find:
-    paths: /etc/lemonldap-ng/
-    patterns: "^.*?{{ lemonldap_webserver }}.*?\\.conf$"
-    use_regex: true
-  register: lemonldap_webserver_conf_search_res
+- name: Search config file
+  block:
+    - name: Find conf file to edit
+      ansible.builtin.find:
+        paths: /etc/lemonldap-ng/
+        patterns: "^.*?{{ lemonldap_webserver }}.*?\\.conf$"
+        use_regex: true
+      register: lemonldap_webserver_conf_search_res
 
-- name: Find apache conf file to edit
-  ansible.builtin.find:
-    paths: /etc/httpd/conf.d/
-    patterns: "^z-lemonldap-ng.*?\\.conf$"
-    use_regex: true
-  register: lemonldap_apache_conf_search_res
+    - name: Find apache conf file to edit
+      ansible.builtin.find:
+        paths: /etc/httpd/conf.d/
+        patterns: "^z-lemonldap-ng.*?\\.conf$"
+        use_regex: true
+      register: lemonldap_apache_conf_search_res
 
-- name: Find nginx conf file to edit
-  ansible.builtin.find:
-    paths: /etc/nginx/conf.d/
-    patterns: "*-nginx.conf"
-  register: lemonldap_nginx_conf_search_res
+    - name: Find nginx conf file to edit
+      ansible.builtin.find:
+        paths: /etc/nginx/conf.d/
+        patterns: "*-nginx.conf"
+      register: lemonldap_nginx_conf_search_res
 
-- name: Find ini file to edit
-  ansible.builtin.find:
-    paths: /etc/lemonldap-ng/
-    patterns: "^.*?\\.ini$"
-    use_regex: true
-  register: lemonldap_ini_search_rest
+    - name: Find ini file to edit
+      ansible.builtin.find:
+        paths: /etc/lemonldap-ng/
+        patterns: "^.*?\\.ini$"
+        use_regex: true
+      register: lemonldap_ini_search_rest
 
-- name: Check LLNG Current Domain
+- name: Reconfigure lemonldap (based on search)
   ansible.builtin.replace:
-    path: "{{ item.path }}"
-    regexp: 'example\.com'
+    path: '{{ item.path }}'
+    regexp: example\.com
     replace: '{{ lemonldap_domain }}'
   when: lemonldap_domain | default('example.com') != 'example.com'
   with_items:
-    - "{{ lemonldap_webserver_conf_search_res.files }}"
-    - "{{ lemonldap_apache_conf_search_res.files }}"
-    - "{{ lemonldap_nginx_conf_search_res.files }}"
-    - "{{ lemonldap_ini_search_rest.files }}"
-    - {'path': '/var/lib/lemonldap-ng/conf/lmConf-1.json'}
+    - '{{ lemonldap_webserver_conf_search_res.files }}'
+    - '{{ lemonldap_apache_conf_search_res.files }}'
+    - '{{ lemonldap_nginx_conf_search_res.files }}'
+    - '{{ lemonldap_ini_search_rest.files }}'
+    - {path: /var/lib/lemonldap-ng/conf/lmConf-1.json}
   notify:
     - Reload Webserver
     - Enable and reload lemonldap
@@ -57,27 +59,26 @@
     - ansible_os_family == "Debian"
   notify: Reload Webserver
 
-- name: Enable apache lemonldap config
-  ansible.builtin.command: "a2ensite {{ item }}"
-  register: res_a2ensite
-  changed_when: "'already enabled' not in res_a2ensite.stdout"
-  with_items:
-    - portal-apache2
-    - manager-apache2
-    - handler-apache2
+- name: Do some specific configuration for Apache site and module
   when:
     - lemonldap_webserver == 'apache'
     - ansible_os_family == "Debian"
-  notify: Reload Webserver
+  block:
+    - name: Enable apache lemonldap config
+      ansible.builtin.command: "a2ensite {{ item }}"
+      register: res_a2ensite
+      changed_when: "'already enabled' not in res_a2ensite.stdout"
+      with_items:
+        - portal-apache2
+        - manager-apache2
+        - handler-apache2
+      notify: Reload Webserver
 
-- name: Enable apache module required by lemonldap config
-  ansible.builtin.command: "a2enmod {{ item }}"
-  register: res_a2enmod
-  changed_when: "'already enabled' not in res_a2enmod.stdout"
-  with_items:
-    - headers
-    - rewrite
-  when:
-    - lemonldap_webserver == 'apache'
-    - ansible_os_family == "Debian"
-  notify: Reload Webserver
+    - name: Enable apache module required by lemonldap config
+      ansible.builtin.command: "a2enmod {{ item }}"
+      register: res_a2enmod
+      changed_when: "'already enabled' not in res_a2enmod.stdout"
+      with_items:
+        - headers
+        - rewrite
+      notify: Reload Webserver
