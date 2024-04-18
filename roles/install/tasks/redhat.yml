@@ -45,25 +45,11 @@
     mode: 0644
   register: llng_repo
 
-- name: Install Webserver Dependencies (1/2)
-  ansible.builtin.yum:
-    name:
-      - httpd
-      - mod_perl
-      - mod_fcgid
-      - perl-LWP-Protocol-https
+- name: Install Webserver and dependencies
+  ansible.builtin.package:
+    name: '{{ __redhat_pkgs }}'
     state: present
     update_cache: true
-  when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
-
-- name: Install Webserver Dependencies (2/2)
-  ansible.builtin.yum:
-    name:
-      - nginx
-      - lemonldap-ng-fastcgi-server
-      - perl-LWP-Protocol-https
-    state: present
-  when: lemonldap_webserver | default('apache') == 'nginx'
 
 - name: Enable Apache
   ansible.builtin.service:
@@ -78,18 +64,3 @@
     state: started
     enabled: true
   when: lemonldap_webserver | default('apache') == 'nginx'
-
-- name: Install LLNG
-  ansible.builtin.yum:
-    name:
-      - lemonldap-ng
-      - lemonldap-ng-doc
-    state: present
-
-- name: Install LLNG Nginx support
-  ansible.builtin.yum:
-    name:
-      - lemonldap-ng-nginx
-    state: present
-  when:
-    - "lemonldap_webserver == 'nginx'"
