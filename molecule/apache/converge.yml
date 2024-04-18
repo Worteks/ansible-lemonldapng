@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    lemonldap_domain: example.ci
+    lemonldap_webserver: apache
+  roles:
+    - worteks.lemonldap.install

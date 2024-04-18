@@ -1,0 +1,7 @@
+---
+# Use shared config under .config/molecule at the root of this project
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: ../default/prepare.yml
+    verify: ../default/verify.yml
