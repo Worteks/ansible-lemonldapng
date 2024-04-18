@@ -26,35 +26,11 @@
     mode: 0644
   register: llng_repo
 
-- name: Refresh Packages Cache
-  apt:
+- name: Install Webserver and dependencies
+  ansible.builtin.package:
     update_cache: true
-  when:
-    - llng_repo is defined
-    - llng_repo.changed is defined
-    - llng_repo.changed
-
-- name: Install Webserver Dependencies (1/2)
-  apt:
-    name:
-      - apache2
-      - libapache2-mod-perl2
-      - libapache2-mod-fcgid
-      - apt-transport-https
-      - liblasso-perl
+    name: '{{ __debian_pkgs }}'
     state: present
-  when: lemonldap_webserver | default('apache') in ['apache','httpd']
-
-- name: Install Webserver Dependencies (2/2)
-  apt:
-    name:
-      - nginx
-      - nginx-extras
-      - lemonldap-ng-fastcgi-server
-      - apt-transport-https
-      - liblasso-perl
-    state: present
-  when: lemonldap_webserver | default('apache') == 'nginx'
 
 - name: Enable Apache
   service:
@@ -69,10 +45,3 @@
     state: started
     enabled: true
   when: lemonldap_webserver | default('apache') == 'nginx'
-
-- name: Install LLNG
-  apt:
-    name:
-      - lemonldap-ng
-      - lemonldap-ng-doc
-    state: present

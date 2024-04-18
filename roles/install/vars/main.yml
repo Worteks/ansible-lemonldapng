@@ -1,0 +1,29 @@
+---
+__default_pkgs:
+  - lemonldap-ng
+  - lemonldap-ng-doc
+
+__redhat_apache_pkgs:
+  - httpd
+  - mod_perl
+  - mod_fcgid
+__redhat_nginx_pkgs:
+  - nginx
+  - lemonldap-ng-fastcgi-server
+  - lemonldap-ng-nginx
+__redhat_default_pkgs:
+  - perl-LWP-Protocol-https
+__redhat_pkgs: "{{ __default_pkgs + __redhat_default_pkgs +  (__redhat_apache_pkgs if lemonldap_webserver == 'apache' else __redhat_nginx_pkgs) }}"
+
+__debian_apache_pkgs:
+  - apache2
+  - libapache2-mod-perl2
+  - libapache2-mod-fcgid
+__debian_nginx_pkgs:
+  - nginx
+  - nginx-extras
+  - lemonldap-ng-fastcgi-server
+__debian_default_pkgs:
+  - apt-transport-https
+  - liblasso-perl
+__debian_pkgs: "{{ __default_pkgs + __debian_default_pkgs + ( __debian_apache_pkgs if lemonldap_webserver == 'apache' else __debian_nginx_pkgs) }}"
