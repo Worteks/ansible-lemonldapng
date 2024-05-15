@@ -13,7 +13,7 @@
     state: present
 
 - name: Install epel-release
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: epel-release
     state: present
 

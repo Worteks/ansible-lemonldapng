@@ -4,27 +4,27 @@
     - name: Find conf file to edit
       ansible.builtin.find:
         paths: /etc/lemonldap-ng/
-        patterns: "^.*?{{ lemonldap_webserver }}.*?\\.conf$"
+        patterns: ^.*?{{ lemonldap_webserver }}.*?\.conf$
         use_regex: true
       register: lemonldap_webserver_conf_search_res
 
     - name: Find apache conf file to edit
       ansible.builtin.find:
         paths: /etc/httpd/conf.d/
-        patterns: "^z-lemonldap-ng.*?\\.conf$"
+        patterns: ^z-lemonldap-ng.*?\.conf$
         use_regex: true
       register: lemonldap_apache_conf_search_res
 
     - name: Find nginx conf file to edit
       ansible.builtin.find:
         paths: /etc/nginx/conf.d/
-        patterns: "*-nginx.conf"
+        patterns: '*-nginx.conf'
       register: lemonldap_nginx_conf_search_res
 
     - name: Find ini file to edit
       ansible.builtin.find:
         paths: /etc/lemonldap-ng/
-        patterns: "^.*?\\.ini$"
+        patterns: ^.*?\.ini$
         use_regex: true
       register: lemonldap_ini_search_rest
 
@@ -46,8 +46,8 @@
 
 - name: Symlink webserver config file
   ansible.builtin.file:
-    src: "/etc/lemonldap-ng/{{ item }}.conf"
-    dest: "/etc/nginx/sites-enabled/{{ item }}.conf"
+    src: /etc/lemonldap-ng/{{ item }}.conf
+    dest: /etc/nginx/sites-enabled/{{ item }}.conf
     state: link
   with_items:
     - test-nginx
@@ -65,7 +65,7 @@
     - ansible_os_family == "Debian"
   block:
     - name: Enable apache lemonldap config
-      ansible.builtin.command: "a2ensite {{ item }}"
+      ansible.builtin.command: a2ensite {{ item }}
       register: res_a2ensite
       changed_when: "'already enabled' not in res_a2ensite.stdout"
       with_items:
@@ -75,7 +75,7 @@
       notify: Reload Webserver
 
     - name: Enable apache module required by lemonldap config
-      ansible.builtin.command: "a2enmod {{ item }}"
+      ansible.builtin.command: a2enmod {{ item }}
       register: res_a2enmod
       changed_when: "'already enabled' not in res_a2enmod.stdout"
       with_items:
