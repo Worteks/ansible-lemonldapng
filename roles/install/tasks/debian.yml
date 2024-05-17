@@ -6,7 +6,7 @@
 
 - name: Install LLNG Repository KEY
   ansible.builtin.copy:
-    src: rpm-gpg-key-ow2
+    src: deb-gpg-key-ow2
     dest: /tmp/gpg-key-ow2
     owner: root
     group: root
