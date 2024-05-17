@@ -3,5 +3,4 @@
 provisioner:
   name: ansible
   playbooks:
-    prepare: ../default/prepare.yml
     verify: ../default/verify.yml
