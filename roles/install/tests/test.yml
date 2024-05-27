@@ -1,16 +1,20 @@
-- hosts: lemon
+- name: Execute roles
+  hosts: lemon
   roles:
-    - ../ansible-lemonldapng/
+    - worteks.lemonldap.install
 
-- hosts: lemon
+- name: Run login tasks
+  hosts: lemon
   tasks:
-    - uri:
+    - name: Get login token
+      ansible.builtin.uri:
         url: http://{{ ansible_default_ipv4.address }}/
         headers:
             Host: "auth.{{ lemonldap_domain }}"
         return_content: yes
       register: loginform
-    - uri:
+    - name: Login to create cookie
+      ansible.builtin.uri:
         url: http://{{ ansible_default_ipv4.address }}/
         method: POST
         headers:
@@ -23,5 +27,6 @@
             token: "{{ loginform.content | regex_search('name=\"token\" value=\"([^\"]*)\"', '\\1') }}"
       register: login_post
 
-    - assert:
+    - name: Assert login cookie
+      ansible.builtin.assert:
         that: "'lemonldap=' in login_post.set_cookie"
