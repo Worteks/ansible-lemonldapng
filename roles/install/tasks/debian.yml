@@ -1,11 +1,11 @@
 ---
 - name: Install apt-transport-https
-  apt:
+  ansible.builtin.apt:
     name: apt-transport-https
     state: present
 
 - name: Install LLNG Repository KEY
-  copy:
+  ansible.builtin.copy:
     src: rpm-gpg-key-ow2
     dest: /tmp/gpg-key-ow2
     owner: root
@@ -13,12 +13,12 @@
     mode: 0644
 
 - name: Import LLNG GPG KEY
-  apt_key:
+  ansible.builtin.apt_key:
     file: /tmp/gpg-key-ow2
     state: present
 
 - name: Install LLNG Debian Repository
-  copy:
+  ansible.builtin.copy:
     src: debian_lemonldap-ng.list
     dest: /etc/apt/sources.list.d/lemonldap-ng.list
     owner: root
@@ -27,7 +27,7 @@
   register: llng_repo
 
 - name: Refresh Packages Cache
-  apt:
+  ansible.builtin.apt:
     update_cache: true
   when:
     - llng_repo is defined
@@ -35,7 +35,7 @@
     - llng_repo.changed
 
 - name: Install Webserver Dependencies (1/2)
-  apt:
+  ansible.builtin.apt:
     name:
       - apache2
       - libapache2-mod-perl2
@@ -46,7 +46,7 @@
   when: lemonldap_webserver | default('apache') in ['apache','httpd']
 
 - name: Install Webserver Dependencies (2/2)
-  apt:
+  ansible.builtin.apt:
     name:
       - nginx
       - nginx-extras
@@ -57,21 +57,21 @@
   when: lemonldap_webserver | default('apache') == 'nginx'
 
 - name: Enable Apache
-  service:
+  ansible.builtin.service:
     name: apache2
     state: started
     enabled: true
   when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
 
 - name: Enable Nginx
-  service:
+  ansible.builtin.service:
     name: nginx
     state: started
     enabled: true
   when: lemonldap_webserver | default('apache') == 'nginx'
 
 - name: Install LLNG
-  apt:
+  ansible.builtin.apt:
     name:
       - lemonldap-ng
       - lemonldap-ng-doc
