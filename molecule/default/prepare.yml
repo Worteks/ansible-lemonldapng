@@ -4,7 +4,7 @@
   gather_facts: true
   tasks:
     - name: Update apt cache and install gpg
-      apt:
+      ansible.builtin.apt:
         name: gpg
         state: present
         update_cache: true

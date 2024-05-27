@@ -6,7 +6,7 @@
   gather_facts: false
   tasks:
     - name: Verify web server is running
-      uri:
+      ansible.builtin.uri:
         url: http://localhost/
         status_code: 200
         return_content: true
@@ -14,9 +14,9 @@
           Host: auth.example.ci
       register: result_get_auth_portal
     - name: Debug
-      debug:
+      ansible.builtin.debug:
         msg: '{{ result_get_auth_portal }}'
     - name: Check if LemonLDAP is present into response
-      assert:
+      ansible.builtin.assert:
         that:
           - "'LemonLDAP' in result_get_auth_portal.content"
