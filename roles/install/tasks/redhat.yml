@@ -1,6 +1,6 @@
 ---
 - name: Install LLNG Repository KEY
-  copy:
+  ansible.builtin.copy:
     src: rpm-gpg-key-ow2
     dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-OW2
     owner: root
@@ -8,12 +8,12 @@
     mode: 0644
 
 - name: Import LLNG GPG KEY
-  rpm_key:
+  ansible.builtin.rpm_key:
     key: /etc/pki/rpm-gpg/RPM-GPG-KEY-OW2
     state: present
 
 - name: Install epel-release
-  yum:
+  ansible.builtin.yum:
     name: epel-release
     state: present
 
@@ -28,7 +28,7 @@
   register: check_powertools
   changed_when: false
   ansible.builtin.command:
-    cmd: dnf repolist --enabled {{powertools_repo }}
+    cmd: dnf repolist --enabled {{ powertools_repo }}
 
 - name: Enable powertools if not already enabled
   when: (check_powertools.stdout_lines | length) == 0
@@ -37,7 +37,7 @@
     cmd: dnf -y config-manager --set-enabled {{ powertools_repo }}
 
 - name: Install LLNG Enterprise Linux Repository
-  copy:
+  ansible.builtin.copy:
     src: redhat_lemonldap-ng.repo
     dest: /etc/yum.repos.d/lemonldap-ng.repo
     owner: root
@@ -46,7 +46,7 @@
   register: llng_repo
 
 - name: Install Webserver Dependencies (1/2)
-  yum:
+  ansible.builtin.yum:
     name:
       - httpd
       - mod_perl
@@ -57,7 +57,7 @@
   when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
 
 - name: Install Webserver Dependencies (2/2)
-  yum:
+  ansible.builtin.yum:
     name:
       - nginx
       - lemonldap-ng-fastcgi-server
@@ -66,28 +66,28 @@
   when: lemonldap_webserver | default('apache') == 'nginx'
 
 - name: Enable Apache
-  service:
+  ansible.builtin.service:
     name: httpd
     state: started
     enabled: true
   when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
 
 - name: Enable Nginx
-  service:
+  ansible.builtin.service:
     name: nginx
     state: started
     enabled: true
   when: lemonldap_webserver | default('apache') == 'nginx'
 
 - name: Install LLNG
-  yum:
+  ansible.builtin.yum:
     name:
       - lemonldap-ng
       - lemonldap-ng-doc
     state: present
 
 - name: Install LLNG Nginx support
-  yum:
+  ansible.builtin.yum:
     name:
       - lemonldap-ng-nginx
     state: present
