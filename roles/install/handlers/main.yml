@@ -1,6 +1,6 @@
 ---
 - name: Enable and reload lemonldap
-  service:
+  ansible.builtin.service:
     name: llng-fastcgi-server
     state: restarted
     enabled: true
@@ -8,7 +8,7 @@
     - lemonldap_webserver == 'nginx'
 
 - name: Debian Restart Apache
-  service:
+  ansible.builtin.service:
     name: apache2
     state: restarted
   listen: Reload Webserver
@@ -17,7 +17,7 @@
     - lemonldap_webserver in [ 'apache', 'httpd' ]
 
 - name: Redhat Restart Apache
-  service:
+  ansible.builtin.service:
     name: httpd
     state: restarted
   listen: Reload Webserver
@@ -26,7 +26,7 @@
     - lemonldap_webserver in [ 'apache', 'httpd' ]
 
 - name: Restart nginx
-  service:
+  ansible.builtin.service:
     name: nginx
     state: restarted
   listen: Reload Webserver
