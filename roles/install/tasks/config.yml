@@ -1,2 +1,3 @@
 ---
-- include_tasks: set-domain.yml
+- name: Include_tasks set-domain.yml
+  ansible.builtin.include_tasks: set-domain.yml
