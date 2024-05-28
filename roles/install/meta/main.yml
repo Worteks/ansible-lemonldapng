@@ -5,14 +5,10 @@ galaxy_info:
     company: Worteks
     issue_tracker_url: https://github.com/worteks/ansible-lemonldapng/issues
     license: MIT
-    min_ansible_version: 2.4
+    min_ansible_version: "2.12"
     github_branch: master
-    role_name: workteks.lemonldap
     platforms:
-        - name: CentOS
-          versions:
-              - all
-        - name: RedHat
+        - name: EL
           versions:
               - all
         - name: Debian
@@ -23,8 +19,8 @@ galaxy_info:
               - all
     galaxy_tags:
         - authentication
-        - SSO
-        - SAML
-        - LemonLDAP-NG
-        - Web
+        - sso
+        - saml
+        - lemonldapng
+        - web
 dependencies: []
