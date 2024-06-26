@@ -25,6 +25,8 @@ variables passed in as parameters) is always nice for users too:
       vars:
         vhost_vhosts:
           - vhostname: demo.example.com
+            configure_default_location: true
+            redirect_http_to_https: true
             exported_headers:
               - {header: x-wing, value: machin}
             access_rules:

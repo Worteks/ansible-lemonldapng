@@ -9,6 +9,7 @@
     https: '{{ item.https | default(true) }}'
     maintenance: '{{ item.maintenance | default(false) }}'
   loop: '{{ vhost_vhosts }}'
+
 - name: Configure vhost on nginx
   ansible.builtin.template:
     src: nginx_vhost.j2
@@ -18,11 +19,12 @@
     mode: '0640'
   loop: '{{ vhost_vhosts }}'
   notify: Reload webserver
+
 - name: Create a symbolic link
   when: ansible_os_family == 'Debian'
   ansible.builtin.file:
     src: '{{ __nginx_vhosts_dir }}{{ item.vhostname }}.conf'
-    dest: /etc/nginx/sites-enabled/{{ item.vhostname }}.conf
+    dest: '{{ __nginx_vhosts_dir_enabled }}{{ item.vhostname }}.conf'
     owner: '{{ __nginx_webserver_owner }}'
     group: '{{ __nginx_webserver_group }}'
     state: link

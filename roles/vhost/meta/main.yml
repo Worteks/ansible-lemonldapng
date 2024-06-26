@@ -7,12 +7,21 @@ galaxy_info:
   min_ansible_version: 2.13
   platforms:
     - name: CentOS
-      versions: [all]
+      versions:
+        - all
     - name: RedHat
-      versions: [all]
+      versions:
+        - all
     - name: Debian
-      versions: [all]
+      versions:
+        - all
     - name: Ubuntu
-      versions: [all]
-  galaxy_tags: [authentication, SSO, SAML, LemonLDAP-NG, Web]
+      versions:
+        - all
+  galaxy_tags:
+    - authentication
+    - SSO
+    - SAML
+    - LemonLDAP-NG
+    - Web
 dependencies: []

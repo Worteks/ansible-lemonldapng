@@ -1,4 +1,7 @@
 ---
 __nginx_vhosts_dir: "{{ '/etc/nginx/sites-available/' if ansible_os_family == 'Debian' else '/etc/nginx/conf.d/' }}"
+__nginx_vhosts_dir_enabled: "{{ '/etc/nginx/sites-enabled/' if ansible_os_family == 'Debian' else '/etc/nginx/conf.d/' }}"
 __nginx_webserver_owner: "{{ 'www-data' if ansible_os_family == 'Debian' else 'nginx' }}"
 __nginx_webserver_group: "{{ 'www-data' if ansible_os_family == 'Debian' else 'nginx' }}"
+__nginx_default_http_port: 80
+__nginx_default_https_port: 443

@@ -8,9 +8,9 @@
       apt: update_cache=yes cache_valid_time=600
       when: ansible_os_family == 'Debian'
       changed_when: false
-    - name: Install GPG
+    - name: Install ssl-cert for default snakeoil cert
       apt:
-        name: gpg
+        name: ssl-cert
         state: present
       when: ansible_os_family == 'Debian'
       changed_when: false
