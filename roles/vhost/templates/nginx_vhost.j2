@@ -1,0 +1,70 @@
+{% if item.https and (item.redirect_http_to_https | default(false)) %}
+server {
+  listen 80;
+  server_name {{ item.vhostname }};
+
+  # Redirect all traffic to SSL
+  rewrite ^ https://$host:{{ item.port }}$request_uri? permanent;
+}
+{% endif %}
+server {
+{% if item.https %}
+  listen {{ item.port | default(__nginx_default_https_port) }} ssl http2;
+  ssl on;
+  ssl_session_timeout 1d;
+  ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+  ssl_session_tickets off;
+  
+  # intermediate configuration
+  ssl_protocols TLSv1.2 TLSv1.3;
+  ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+  ssl_prefer_server_ciphers off;
+  
+  # HSTS (ngx_http_headers_module is required) (63072000 seconds)
+  add_header Strict-Transport-Security "max-age=63072000" always;
+  
+  # OCSP stapling
+  ssl_stapling on;
+  ssl_stapling_verify on;
+  ssl_certificate {{ item.certificate_location | default(vhost_global_certificate_location) }};
+  ssl_certificate_key {{ item.certificate_key_location | default(vhost_global_certificate_key_location) }};
+
+{% else %}
+  listen {{ item.port | default(__nginx_default_http_port) }};
+{% endif %}
+
+  server_name {{ item.vhostname }};
+  root /var/www/html;
+  # Internal authentication request
+  location = /lmauth {
+    internal;
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass unix:/var/run/llng-fastcgi-server/llng-fastcgi.sock;
+    # Drop post data
+    fastcgi_pass_request_body  off;
+    fastcgi_param CONTENT_LENGTH "";
+    # Keep original hostname
+    fastcgi_param HOST $http_host;
+    # Keep original request (LLNG server will receive /lmauth)
+    fastcgi_param X_ORIGINAL_URI  $original_uri;
+  }
+
+{% if item.configure_default_location | default(true) %}
+  # Client requests
+  location / {
+    auth_request /lmauth;
+    set $original_uri $uri$is_args$args;
+    auth_request_set $lmremote_user $upstream_http_lm_remote_user;
+    auth_request_set $lmlocation $upstream_http_location;
+    error_page 401 $lmlocation;
+{% if item.http_proxy_backend is defined %}
+    proxy_pass {{ item.http_proxy_backend }};
+    include /etc/nginx/proxy_params;
+{% endif %}
+    ##################################
+    # PASSING HEADERS TO APPLICATION #
+    ##################################
+    include /etc/lemonldap-ng/nginx-lua-headers.conf;
+  }
+{% endif %}
+}

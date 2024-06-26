@@ -1,0 +1,4 @@
+---
+vhost_global_certificate_location: "{{ '/etc/ssl/certs/ssl-cert-snakeoil.pem' if ansible_os_family == 'Debian' else ('/etc/ssl/certs/%s.pem' % ansible_hostname) }}"
+vhost_global_certificate_key_location: "{{ '/etc/ssl/private/ssl-cert-snakeoil.key' if ansible_os_family == 'Debian' else ('/etc/ssl/%s.key' % ansible_hostname) }}"
+vhost_lua_module_available: "{{ ansible_os_family == 'Debian' }}"
