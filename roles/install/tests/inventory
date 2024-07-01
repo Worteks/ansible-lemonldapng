@@ -1,5 +1,0 @@
-[lemon]
-debhttpdlemon.local ansible_user=root lemonldap_domain=apache.debtest.com lemonldap_webserver=apache
-elhttpdlemon.local ansible_user=root lemonldap_domain=apache.eltest.com lemonldap_webserver=apache
-debnginxlemon.local ansible_user=root lemonldap_domain=nginx.debtest.com lemonldap_webserver=nginx
-elnginxlemon.local ansible_user=root lemonldap_domain=nginx.eltest.com lemonldap_webserver=nginx
