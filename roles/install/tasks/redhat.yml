@@ -36,13 +36,15 @@
   ansible.builtin.command:
     cmd: dnf -y config-manager --set-enabled {{ powertools_repo }}
 
+# Defined in defaults/main.yml
 - name: Install LLNG Enterprise Linux Repository
-  ansible.builtin.copy:
-    src: redhat_lemonldap-ng.repo
-    dest: /etc/yum.repos.d/lemonldap-ng.repo
-    owner: root
-    group: root
-    mode: 0644
+  ansible.builtin.yum_repository:
+    name: '{{ item.name }}'
+    baseurl: '{{ item.baseurl }}'
+    file: /etc/yum.repos.d/lemonldap-ng.repo
+    gpgcheck: '{{ item.gpgcheck }}'
+    gpgkey: '{{ item.gpgkey }}'
+  loop: '{{ lemonldap_yum_repositories }}'
   register: llng_repo
 
 - name: Install Webserver and dependencies

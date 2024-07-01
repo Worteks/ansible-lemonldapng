@@ -8,3 +8,20 @@ lemonldap_webserver_conf:
   - manager
   - portal
   - test
+
+lemonldap_apt_repositories:
+  - deb     http://lemonldap-ng.org/deb stable main
+  - deb-src http://lemonldap-ng.org/deb stable main
+
+lemonldap_yum_repositories:
+  - name: LemonLDAP::NG packages
+    baseurl: https://lemonldap-ng.org/redhat/stable/$releasever/noarch/
+    enabled: true
+    gpgcheck: true
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OW2
+
+  - name: LemonLDAP::NG sources
+    baseurl: https://lemonldap-ng.org/redhat/stable/$releasever/SRPMS/
+    enabled: false
+    gpgcheck: true
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OW2
