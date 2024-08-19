@@ -17,13 +17,13 @@
     file: /tmp/gpg-key-ow2
     state: present
 
+# Defined in defaults/main.yml
 - name: Install LLNG Debian Repository
-  ansible.builtin.copy:
-    src: debian_lemonldap-ng.list
-    dest: /etc/apt/sources.list.d/lemonldap-ng.list
-    owner: root
-    group: root
-    mode: 0644
+  ansible.builtin.apt_repository:
+    repo: '{{ item }}'
+    state: present
+    filename: lemonldap-ng.list
+  loop: '{{ lemonldap_apt_repositories }}'
   register: llng_repo
 
 - name: Install Webserver and dependencies
