@@ -37,11 +37,11 @@
     name: apache2
     state: started
     enabled: true
-  when: lemonldap_webserver | default('apache') in [ 'apache', 'httpd' ]
+  when: lemonldap_webserver in [ 'apache', 'httpd' ]
 
 - name: Enable Nginx
   ansible.builtin.service:
     name: nginx
     state: started
     enabled: true
-  when: lemonldap_webserver | default('apache') == 'nginx'
+  when: lemonldap_webserver == 'nginx'
