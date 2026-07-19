@@ -7,15 +7,10 @@
 - name: Install LLNG Repository KEY
   ansible.builtin.copy:
     src: deb-gpg-key-ow2
-    dest: /tmp/gpg-key-ow2
+    dest: "{{ __debian_gpg_repo_key }}"
     owner: root
     group: root
     mode: 0644
-
-- name: Import LLNG GPG KEY
-  ansible.builtin.apt_key:
-    file: /tmp/gpg-key-ow2
-    state: present
 
 # Defined in defaults/main.yml
 - name: Install LLNG Debian Repository

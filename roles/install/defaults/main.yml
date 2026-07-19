@@ -10,8 +10,8 @@ lemonldap_webserver_conf:
   - test
 
 lemonldap_apt_repositories:
-  - deb     http://lemonldap-ng.org/deb stable main
-  - deb-src http://lemonldap-ng.org/deb stable main
+  - deb     [arch={{ _pkg_arch }} signed-by={{ __debian_gpg_repo_key }}] http://lemonldap-ng.org/deb stable main
+  - deb-src [signed-by={{ __debian_gpg_repo_key }}] http://lemonldap-ng.org/deb stable main
 
 lemonldap_yum_repositories:
   - name: LemonLDAP::NG packages

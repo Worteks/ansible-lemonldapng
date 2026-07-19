@@ -56,13 +56,13 @@
     - handler-nginx
   when:
     - lemonldap_webserver == 'nginx'
-    - ansible_os_family == "Debian"
+    - ansible_facts['os_family'] == "Debian"
   notify: Reload Webserver
 
 - name: Do some specific configuration for Apache site and module
   when:
     - lemonldap_webserver == 'apache'
-    - ansible_os_family == "Debian"
+    - ansible_facts['os_family'] == "Debian"
   block:
     - name: Enable apache lemonldap config
       ansible.builtin.command: a2ensite {{ item }}

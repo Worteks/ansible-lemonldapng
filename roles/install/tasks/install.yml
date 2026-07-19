@@ -1,7 +1,7 @@
 ---
 - name: Include_tasks redhat.yml
   ansible.builtin.include_tasks: redhat.yml
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts['os_family'] == "RedHat"
 - name: Include_tasks debian.yml
   ansible.builtin.include_tasks: debian.yml
-  when: ansible_os_family == "Debian"
+  when: ansible_facts['os_family'] == "Debian"

@@ -23,7 +23,7 @@ jobs:
       - name: Set up Python 3.
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x
+          python-version: 3.13
 
       - name: Install test dependencies.
         run: pip3 install yamllint
@@ -44,7 +44,7 @@ jobs:
       - name: Set up Python 3.
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x
+          python-version: 3.13
 
       - name: Install test dependencies.
         run: pip3 install ansible ansible-core==2.16.8 molecule docker molecule-plugins

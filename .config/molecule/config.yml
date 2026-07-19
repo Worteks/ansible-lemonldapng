@@ -22,8 +22,8 @@ platforms:
     dockerfile: ../../.config/molecule/Dockerfile.j2
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
-  - name: debian11
-    image: debian:bullseye-slim
+  - name: debian12
+    image: debian:bookworm-slim
     command: /lib/systemd/systemd
     privileged: true
     pre_build_image: false
@@ -31,8 +31,8 @@ platforms:
     dockerfile: ../../.config/molecule/Dockerfile.j2
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
-  - name: debian12
-    image: debian:bookworm-slim
+  - name: debian13
+    image: debian:trixie-slim
     command: /lib/systemd/systemd
     privileged: true
     pre_build_image: false
