@@ -9,3 +9,14 @@
         state: present
         update_cache: true
       when: ansible_os_family == 'Debian'
+
+    - name: Ensure Apache lock directory structure exists on Debian 13
+      ansible.builtin.file:
+        path: /run/lock/
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+      when:
+        - ansible_facts['distribution'] == "Debian"
+        - ansible_facts['distribution_major_version'] == "13"

@@ -44,6 +44,7 @@
     file: /etc/yum.repos.d/lemonldap-ng.repo
     gpgcheck: '{{ item.gpgcheck }}'
     gpgkey: '{{ item.gpgkey }}'
+    description: LemonLDAP::NG official repository
   loop: '{{ lemonldap_yum_repositories }}'
   register: llng_repo
 
