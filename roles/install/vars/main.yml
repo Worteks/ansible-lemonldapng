@@ -1,4 +1,6 @@
 ---
+_pkg_arch: "{{ 'arm64' if ansible_facts.architecture == 'aarch64' else 'amd64' }}"
+
 __default_pkgs:
   - lemonldap-ng
   - lemonldap-ng-doc
@@ -24,3 +26,5 @@ __debian_default_pkgs:
   - liblasso-perl
 __debian_pkgs: "{{ __default_pkgs + __debian_default_pkgs + (__debian_apache_pkgs\
   \ if lemonldap_webserver == 'apache' else __debian_nginx_pkgs) }}"
+
+__debian_gpg_repo_key: /usr/share/keyrings/lemonldap-debian-packages-pub.gpg

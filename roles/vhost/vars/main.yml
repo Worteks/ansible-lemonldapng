@@ -1,0 +1,8 @@
+---
+_is_deb: "{{ ansible_facts['os_family'] == 'Debian' }}"
+__nginx_vhosts_dir: "{{ '/etc/nginx/sites-available/' if _is_deb else '/etc/nginx/conf.d/' }}"
+__nginx_vhosts_dir_enabled: "{{ '/etc/nginx/sites-enabled/' if _is_deb else '/etc/nginx/conf.d/' }}"
+__nginx_webserver_owner: "{{ 'www-data' if _is_deb else 'nginx' }}"
+__nginx_webserver_group: "{{ 'www-data' if _is_deb else 'nginx' }}"
+__nginx_default_http_port: 80
+__nginx_default_https_port: 443

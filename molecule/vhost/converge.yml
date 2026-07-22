@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    vhost_vhosts:
+      - vhostname: demo.example.com
+        port: 443
+        https: true
+        redirect_http_to_https: true
+        http_proxy_backend: http://127.0.0.1:8888
+        exported_headers:
+          - {header: x-wing, value: machin}
+        access_rules:
+          - {location: /accept, rule: accept}
+  roles:
+    - role: worteks.lemonldap.vhost
